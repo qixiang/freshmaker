@@ -1,38 +1,41 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>API version 1 &mdash; Freshmaker  documentation</title>
   
 
   
-  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -78,6 +81,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -98,12 +102,13 @@
 <li class="toctree-l1"><a class="reference internal" href="api_v2.html">API version 2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="messaging_api.html">Messaging API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dev_scripts.html">Development scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">Freshmaker database</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -138,18 +143,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>API version 1</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/api_v1.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -346,7 +353,7 @@
 <dl class="simple" id="build-rebuild-reason">
 <dt><em>rebuild_reason</em> - <code class="docutils literal notranslate"><span class="pre">(string)</span></code></dt><dd><p>The reason why this artifact is included in the Event. Can be one of:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">directly_affected</span></code> - The Artifact build is directly affected by the Event (for example affected by the CVE) and is whitelisted by Freshmaker’s configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">directly_affected</span></code> - The Artifact build is directly affected by the Event (for example affected by the CVE) and is allowed by Freshmaker’s configuration.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">dependency</span></code> - The Artifact build is included in the Event just because it is dependency of <code class="docutils literal notranslate"><span class="pre">directly_affected</span></code> Artifact build.</p></li>
 </ul>
 </dd>
@@ -424,7 +431,7 @@
 <h2>HTTP REST API<a class="headerlink" href="#http-rest-api" title="Permalink to this headline">¶</a></h2>
 <dl class="http get">
 <dt id="get--api-1-events-">
-<code class="sig-name descname">GET </code><code class="sig-name descname">/api/1/events/</code><a class="headerlink" href="#get--api-1-events-" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/1/events/</span></code><a class="headerlink" href="#get--api-1-events-" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns Freshmaker Events.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">id</span></code> is set, only the Freshmaker Event defined by that ID is
 returned.</p>
@@ -462,7 +469,7 @@ the order will be descending. The default value is <code class="docutils literal
 
 <dl class="http patch">
 <dt id="patch--api-1-events-(int-id)">
-<code class="sig-name descname">PATCH </code><code class="sig-name descname">/api/1/events/</code><span class="sig-paren">(</span><em class="property">int: </em><em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#patch--api-1-events-(int-id)" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">PATCH</span> </code><code class="sig-name descname"><span class="pre">/api/1/events/</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">int:</span> </em><em class="sig-param"><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#patch--api-1-events-(int-id)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Manage Freshmaker event defined by ID. The request must be
 <em class="mimetype">application/json</em>.</p>
 <p>Returns the cancelled Freshmaker event as JSON.</p>
@@ -494,7 +501,7 @@ is supported.</p></li>
 
 <dl class="http get">
 <dt id="get--api-1-events-(int-id)">
-<code class="sig-name descname">GET </code><code class="sig-name descname">/api/1/events/</code><span class="sig-paren">(</span><em class="property">int: </em><em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-1-events-(int-id)" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/1/events/</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">int:</span> </em><em class="sig-param"><span class="pre">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-1-events-(int-id)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns Freshmaker Events.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">id</span></code> is set, only the Freshmaker Event defined by that ID is
 returned.</p>
@@ -532,7 +539,7 @@ the order will be descending. The default value is <code class="docutils literal
 
 <dl class="http post">
 <dt id="post--api-1-builds-">
-<code class="sig-name descname">POST </code><code class="sig-name descname">/api/1/builds/</code><a class="headerlink" href="#post--api-1-builds-" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">POST</span> </code><code class="sig-name descname"><span class="pre">/api/1/builds/</span></code><a class="headerlink" href="#post--api-1-builds-" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trigger manual Freshmaker rebuild. The request must be
 <em class="mimetype">application/json</em>.</p>
 <p>Returns the newly created Freshmaker event as JSON.</p>
@@ -574,7 +581,7 @@ provided, it will be inherited from this Freshmaker event.</p></li>
 
 <dl class="http get">
 <dt id="get--api-1-verify-image-(image)">
-<code class="sig-name descname">GET </code><code class="sig-name descname">/api/1/verify-image/</code><span class="sig-paren">(</span><em class="sig-param">image</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-1-verify-image-(image)" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/1/verify-image/</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">image</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-1-verify-image-(image)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verifies whether the container image defined by the NVR is handled
 by Freshmaker. If not, returns explanation why.</p>
 <p><strong>Sample request</strong>:</p>
@@ -606,7 +613,7 @@ by Freshmaker. If not, returns explanation why.</p>
 
 <dl class="http get">
 <dt id="get--api-1-verify-image-repository-(project)-(repo)">
-<code class="sig-name descname">GET </code><code class="sig-name descname">/api/1/verify-image-repository/</code><span class="sig-paren">(</span><em class="sig-param">project</em><span class="sig-paren">)</span><code class="sig-name descname">/</code><span class="sig-paren">(</span><em class="sig-param">repo</em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-1-verify-image-repository-(project)-(repo)" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">GET</span> </code><code class="sig-name descname"><span class="pre">/api/1/verify-image-repository/</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">project</span></em><span class="sig-paren">)</span><code class="sig-name descname"><span class="pre">/</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">repo</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get--api-1-verify-image-repository-(project)-(repo)" title="Permalink to this definition">¶</a></dt>
 <dd><p>Verifies whether the container image repository is handled
 by Freshmaker. If not, returns explanation why.</p>
 <p><strong>Sample request</strong>:</p>
@@ -616,11 +623,22 @@ by Freshmaker. If not, returns explanation why.</p>
 </div>
 <p><strong>Sample response</strong>:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    &quot;repository: {
+        &quot;auto_rebuild_tags&quot;: [
+            &quot;latest&quot;
+        ],
+    },
     &quot;images&quot;: {
-        &quot;foo-1-1&quot;: [
-            &quot;content-set-1&quot;,
-            &quot;content-set-2&quot;
-        ]
+        &quot;foo-1-1&quot;: {
+            &quot;content_sets&quot;: [
+                &quot;content-set-1&quot;,
+                &quot;content-set-2&quot;
+            ],
+            &quot;tags&quot;: [
+                &quot;latest&quot;,
+                &quot;2.0&quot;
+            ]
+        }
     },
     &quot;msg&quot;: &quot;Found 1 images which are handled by Freshmaker.&quot;
 }
@@ -639,7 +657,7 @@ found.</p></li>
 
 <dl class="http post">
 <dt id="post--api-1-async-builds-">
-<code class="sig-name descname">POST </code><code class="sig-name descname">/api/1/async-builds/</code><a class="headerlink" href="#post--api-1-async-builds-" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">POST</span> </code><code class="sig-name descname"><span class="pre">/api/1/async-builds/</span></code><a class="headerlink" href="#post--api-1-async-builds-" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trigger Freshmaker async rebuild (a.k.a non-CVE rebuild). The request
 must be <em class="mimetype">application/json</em>.</p>
 <p>Returns the newly created Freshmaker event as JSON.</p>
@@ -696,29 +714,29 @@ default value will be pulled from the previous buildContainer task.</p></li>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="api_v2.html" class="btn btn-neutral float-right" title="API version 2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="about.html" class="btn btn-neutral float-left" title="About Freshmaker" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="api_v2.html" class="btn btn-neutral float-right" title="API version 2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="about.html" class="btn btn-neutral float-left" title="About Freshmaker" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, Red Hat, Inc. and others
+        &#169; Copyright 2020, Red Hat, Inc. and others.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -726,7 +744,6 @@ default value will be pulled from the previous buildContainer task.</p></li>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
