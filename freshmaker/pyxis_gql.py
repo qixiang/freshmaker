@@ -492,7 +492,6 @@ class PyxisGQL:
                 ),
                 ds.ContainerImagePaginatedResponse.page,
                 ds.ContainerImagePaginatedResponse.page_size,
-                ds.ContainerImagePaginatedResponse.total,
                 ds.ContainerImagePaginatedResponse.data.select(*self._get_image_projection()),
             )
 
@@ -509,10 +508,6 @@ class PyxisGQL:
                     rpm for rpm in rpms if rpm["name"] in rpm_names
                 ]
             images.extend(data)
-
-            # If page_size >= total, means all results have been fetched in the first page
-            if result["find_images"]["page_size"] >= result["find_images"]["total"]:
-                break
             page_num += 1
 
         return images
