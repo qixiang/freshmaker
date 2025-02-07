@@ -21,8 +21,7 @@
 #
 # Written by Jan Kaluza <jkaluza@redhat.com>
 
-""" SQLAlchemy Database models for the Flask app
-"""
+"""SQLAlchemy Database models for the Flask app"""
 
 import json
 
