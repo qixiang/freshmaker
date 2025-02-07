@@ -20,7 +20,7 @@
 #
 # Written by Matt Prahl <mprahl@redhat.com>
 # Written by Jan Kaluza <jkaluza@redhat.com>
-""" Defines custom exceptions and error handling functions """
+"""Defines custom exceptions and error handling functions"""
 
 from flask import jsonify
 from freshmaker import app, log

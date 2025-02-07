@@ -20,7 +20,7 @@
 # SOFTWARE.
 #
 
-""" The FedmsgConsumer class that acts as a consumer entry point for fedmsg-hub.
+"""The FedmsgConsumer class that acts as a consumer entry point for fedmsg-hub.
 This class reads and processes messages from the message bus it is configured
 to use.
 """

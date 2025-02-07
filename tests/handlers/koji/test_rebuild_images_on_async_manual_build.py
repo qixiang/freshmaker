@@ -53,7 +53,7 @@ class TestRebuildImagesOnAsyncManualBuild(helpers.ModelsTestCase):
                     "git_branch": "test_branch",
                     "scratch": False,
                     "signing_intent": None,
-                    "yum_repourls": [("fake-url.repo")],
+                    "yum_repourls": ["fake-url.repo"],
                 },
             ],
         )
