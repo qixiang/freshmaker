@@ -245,7 +245,7 @@ def is_pkg_modular(nvr):
     return "module+" in nvr
 
 
-@retry(wait_on=(requests.exceptions.RequestException,), logger=log)
+@retry(wait_on=(requests.exceptions.RequestException,), logger=log)  # type: ignore
 def get_ocp_release_date(ocp_version):
     """Get the OpenShift version release date via the Product Pages API
 
