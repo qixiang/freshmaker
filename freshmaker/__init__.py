@@ -23,7 +23,7 @@
 #            Matt Prahl <mprahl@redhat.com>
 #            Jan Kaluza <jkaluza@redhat.com>
 
-import pkg_resources
+import pkg_resources  # type: ignore
 
 from logging import getLogger
 from typing import Any  # noqa
