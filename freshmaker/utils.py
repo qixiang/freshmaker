@@ -21,6 +21,7 @@
 #
 
 import functools
+import os
 import subprocess
 import sys
 import tempfile
@@ -32,10 +33,37 @@ import koji
 import requests
 import semver
 import yaml
+
 from flask import has_app_context, url_for
+from requests_kerberos import HTTPKerberosAuth, OPTIONAL
+from urllib.parse import urlparse
 
 from freshmaker import app, conf, log
 from freshmaker.types import ArtifactType
+
+
+# Global authenticated session for Product Pages API
+_product_pages_session = None
+
+
+def _get_authenticated_product_pages_session():
+    """Get or create an authenticated session for Product Pages API"""
+    global _product_pages_session
+
+    if _product_pages_session is None:
+        if not conf.product_pages_api_url:
+            raise RuntimeError("Product Pages API url is not set in config")
+
+        _product_pages_session = requests.Session()
+        auth = HTTPKerberosAuth(mutual_authentication=OPTIONAL, principal=conf.krb_auth_principal)
+
+        # Extract base domain from API URL for authentication
+        parsed_url = urlparse(conf.product_pages_api_url)
+        base_domain = f"{parsed_url.scheme}://{parsed_url.netloc}"
+        auth_url = f"{base_domain}/oidc/authenticate"
+        _product_pages_session.get(auth_url, auth=auth)
+
+    return _product_pages_session
 
 
 def _cmp(a, b):
@@ -217,6 +245,7 @@ def is_pkg_modular(nvr):
     return "module+" in nvr
 
 
+@retry(wait_on=(requests.exceptions.RequestException,), logger=log)
 def get_ocp_release_date(ocp_version):
     """Get the OpenShift version release date via the Product Pages API
 
@@ -224,23 +253,34 @@ def get_ocp_release_date(ocp_version):
     :return: None or date in format of "%Y-%m-%d", example: 2021-02-23.
     :rtype: str or None
     """
-    if not conf.product_pages_api_url:
-        raise RuntimeError("Product Pages API url is not set in config")
-
     ocp_release = f"openshift-{ocp_version}"
 
-    url = f"{conf.product_pages_api_url.rstrip('/')}/releases/{ocp_release}/schedule-tasks/"
-    resp = requests.get(
-        url,
-        params={"flags_or__in": "ga,ga-main", "fields": "name,date_finish"},
-        timeout=conf.net_timeout,
-    )
+    # Get authenticated session (reuses existing authentication if available)
+    session = _get_authenticated_product_pages_session()
 
-    if resp.status_code == 404:
-        log.warning(f"GA date of {ocp_release} is not found via {resp.url}: {resp.reason}")
-        return None
-    if not resp.ok:
-        resp.raise_for_status()
+    base_url = conf.product_pages_api_url.rstrip("/")
+    url = f"{base_url}/releases/{ocp_release}/schedule-tasks/"
+    try:
+        resp = session.get(
+            url,
+            params={"flags_or__in": "ga,ga-main", "fields": "name,date_finish"},
+            timeout=conf.net_timeout,
+        )
+
+        if resp.status_code == 404:
+            log.warning(f"GA date of {ocp_release} is not found via {resp.url}: {resp.reason}")
+            return None
+        if not resp.ok:
+            resp.raise_for_status()
+
+    except requests.exceptions.RequestException as e:
+        if e.response is not None and e.response.status_code in [401, 403]:
+            log.info("CCache file probably expired, removing it.")
+            os.unlink(conf.krb_auth_ccache_file)
+            # And set the global product pages session to None
+            global _product_pages_session
+            _product_pages_session = None
+        raise
 
     # A new unpublished version can exist without any GA schedule date
     if not resp.json():
