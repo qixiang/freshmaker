@@ -423,6 +423,7 @@ class TestQueryPyxis(helpers.FreshmakerTestCase):
         now = datetime(year=2020, month=12, day=15, hour=0, minute=0, second=0)
 
         with requests_mock.Mocker() as http:
+            http.get("http://pp.example.com/oidc/authenticate", text="OK")
             for data in pp_mock_data:
                 http.get(data["url"], json=data["json"])
 
