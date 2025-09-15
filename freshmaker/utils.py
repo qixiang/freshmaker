@@ -282,11 +282,17 @@ def get_ocp_release_date(ocp_version):
             _product_pages_session = None
         raise
 
-    # A new unpublished version can exist without any GA schedule date
-    if not resp.json():
+    try:
+        json_data = resp.json()
+    except requests.exceptions.JSONDecodeError:
+        log.warning(f"Invalid JSON response from {resp.url}: {resp.text}")
         return None
 
-    return resp.json()[0]["date_finish"]
+    # A new unpublished version can exist without any GA schedule date
+    if not json_data:
+        return None
+
+    return json_data[0]["date_finish"]
 
 
 def is_valid_ocp_versions_range(ocp_versions_range):
